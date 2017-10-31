@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>GAME</title>
+		<!--
+		<link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
+		-->
+	</head>
+	<style>
+		#canvas
+		{
+			background-color:grey;
+			margin-left:30%;
+		}
+	</style>
+	<body>
+		<canvas id="canvas" width="500" height="600">
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var  ctx = canvas.getContext('2d');
+		function drawWhiteLines(x){
+			ctx.beginPath()
+			ctx.moveTo(x,0);
+			ctx.lineTo(x,600);
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = 'white';
+			ctx.stroke();
+			ctx.closePath();
+		}
+		function gamePlay(){
+			drawWhiteLines(160);
+			drawWhiteLines(330);
+		}
+		
+		gamePlay();
+
+	</script>
+</html>

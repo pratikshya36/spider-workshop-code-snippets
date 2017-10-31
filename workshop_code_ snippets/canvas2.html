@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>CANVAS</title>
+	</head>
+	<style>
+		#canvas
+			{
+				background-color:grey;
+				margin-left:30%;
+
+			}
+	</style>
+	<body>
+		<canvas id="canvas" width="500" height="600"></canvas>
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+		ctx.beginPath();
+		ctx.arc(100, 100,70, 0, Math.PI*2,true);
+		ctx.fillStyle ='white';
+		ctx.fill();
+		ctx.closePath();
+	</script>
+</html>

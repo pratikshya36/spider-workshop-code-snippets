@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>CANVAS</title>
+	</head>
+	<style>
+		#canvas
+			{
+				background-color:grey;
+				margin-left:30%;
+
+			}
+	</style>
+	<body>
+		<canvas id="canvas" width="500" height="600"></canvas>
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+		ctx.beginPath();
+		ctx.rect(100,100,100,200);
+		ctx.strokeStyle ='white';
+		ctx.stroke();
+		ctx.closePath();
+		ctx.fillText("abcd", 150,150);
+	</script>
+</html>

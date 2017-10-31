@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<title>GAME</title>
+		<!--
+		<link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
+		-->
+	</head>
+	<style>
+		#canvas
+		{
+			background-color:grey;
+			margin-left:30%;
+		}
+	</style>
+	<body>
+		<canvas id="canvas" width="500" height="600">
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var  ctx = canvas.getContext('2d');
+
+		var carImage = new Image();
+		 carImage.src="car.png";
+		 // image of obstacle
+		 var barricadeImage=new Image();
+		 barricadeImage.src="barricade.png";
+
+		carImage.onload=gamePlay;
+		
+		function object(x,y,status,width,height,speed){
+			this.x=x;
+			this.y=y;
+			this.status=status;
+			this.width=width;
+			this.height=height;
+			this.speed=speed;
+		}
+		var car = new object(30, 420, true, 100, 150, 20);
+		//obstacle object
+		var obstacle = new object(40, 0, true, 80, 80, 5);
+	
+		document.addEventListener('keydown',update);
+		function drawWhiteLines(x){
+			ctx.beginPath()
+			ctx.moveTo(x,0);
+			ctx.lineTo(x,600);
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = 'white';
+			ctx.stroke();
+			ctx.closePath();
+		}
+	
+		
+		
+		function drawCar(){
+			ctx.drawImage(carImage,car.x,car.y);
+		}
+		//function drawobstacle
+		function drawObstacle(){
+			ctx.drawImage(barricadeImage, 0, 0, 150, 150, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+		}
+
+		function gamePlay(){
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			drawWhiteLines(160);
+			drawWhiteLines(330);
+			drawCar();
+			
+			if(obstacle.y>=canvas.height)
+			{
+				var random= Math.round(Math.random() * 2) * 170;
+				obstacle.x = 30+random;
+				obstacle.y=0;
+				//drawObstacle();
+			}
+			else
+			{	
+				obstacle.y=obstacle.y+obstacle.speed;
+				//drawObstacle();
+			}
+			drawObstacle();
+			requestAnimationFrame(gamePlay);
+		}
+		function update(event)
+		{
+			if(event.keyCode==37){
+
+				if ((car.x - 150 >= 0) && (car.x <= canvas.width - carImage.width))
+		        		car.x -= 170; 
+			}
+			if (event.keyCode == 39 ){
+				if ((car.x >= 0) && (car.x + 150 <= canvas.width - carImage.width))
+			    	car.x += 170;		
+			}
+		
+			
+				
+		}
+		
+	
+
+	</script>
+</html>

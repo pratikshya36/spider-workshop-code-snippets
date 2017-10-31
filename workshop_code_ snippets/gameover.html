@@ -1,0 +1,143 @@
+<html>
+	<head>
+		<title>GAME</title>
+		<!--
+		<link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
+		-->
+	</head>
+	<style>
+		#canvas
+		{
+			background-color:grey;
+			margin-left:30%;
+		}
+	</style>
+	<body>
+		<canvas id="canvas" width="500" height="600">
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var  ctx = canvas.getContext('2d');
+		var lives=5;
+		var flag=0;
+		var endflag=1;
+		var carImage = new Image();
+		 carImage.src="car.png";
+		 // image of obstacle
+		 var barricadeImage=new Image();
+		 barricadeImage.src="barricade.png";
+		 var gameover = new Image();//creating object for gameover
+		gameover.src = 'gameover.png';
+
+		carImage.onload=gamePlay;
+		
+		function object(x,y,status,width,height,speed){
+			this.x=x;
+			this.y=y;
+			this.status=status;
+			this.width=width;
+			this.height=height;
+			this.speed=speed;
+		}
+	
+		var obstacle = new object(40, 0, true, 80, 80, 5);
+		var car = new object(30, 420, true, 100, 150, 20);
+	
+		document.addEventListener('keydown',update);
+		function drawWhiteLines(x){
+			ctx.beginPath()
+			ctx.moveTo(x,0);
+			ctx.lineTo(x,600);
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = 'white';
+			ctx.stroke();
+			ctx.closePath();
+		}
+	
+		function drawCar(){
+			ctx.drawImage(carImage,car.x,car.y);
+		}
+
+		function drawObstacle(){
+			if (endflag == 1)
+			ctx.drawImage(barricadeImage, 0, 0, 150, 150, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+		}
+		//function detect collision
+		function detectCollision()
+		{
+			{
+			if (car.y <= obstacle.y + obstacle.height) {
+				if (flag == 0 
+					&& (car.x + car.width >= obstacle.x && car.x + car.width <= obstacle.x + obstacle.width)
+					|| (car.x >= obstacle.x && car.x <= obstacle.x + obstacle.width)
+					|| (car.x <= obstacle.x && obstacle.x + obstacle.width <= car.width + car.x)) {
+					flag = 1;
+					obstacle.y = 601;
+					lives--;
+					
+				}
+			}
+		}
+		}
+
+		function gamePlay(){
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			drawWhiteLines(160);
+			drawWhiteLines(330);
+			drawCar();
+			detectCollision();
+			if(lives==0)
+			{
+				endflag=0;
+				ctx.drawImage(gameover, 130, 80, 250, 180);
+				ctx.beginPath();
+				ctx.rect(130, 260, 250, 100);
+				ctx.fill();
+				ctx.font = 'bold 25px serif';
+				ctx.fillStyle = 'green';
+				ctx.fillText('Press Enter to Start', 153, 280);
+			    ctx.fillStyle="black";
+			    ctx.closePath();
+			    cancelAnimationFrame(anim);
+			}
+			if(flag==1&&lives!=0)
+			{
+				flag = 0;
+				obstacle.x = 30 + Math.round(Math.random() * 2) * 170;
+				obstacle.y = 0;
+			}
+			
+			if(obstacle.y>=canvas.height)
+			{
+				obstacle.y=0;
+				obstacle.x = 30 + Math.round(Math.random() * 2) * 170;
+
+			}
+			else
+			{
+				obstacle.y=obstacle.y+obstacle.speed;
+				
+			}
+			drawObstacle();
+
+			var anim=requestAnimationFrame(gamePlay);
+			if (enterpress==true)
+				document.location.reload();
+		}
+		function update(event)
+		{
+			if(event.keyCode==37&&endflag==1){
+				if ((car.x - 150 >= 0) && (car.x <= canvas.width - carImage.width))
+		        		car.x -= 170; 
+			}
+			if (event.keyCode == 39 &&endflag==1){
+				if ((car.x >= 0) && (car.x + 150 <= canvas.width - carImage.width))
+			    	car.x += 170;		
+			}
+			if(event.keyCode == 13 && lives == 0){
+					lives = 5;
+				enterpress=true;
+			}		
+		}
+	</script>
+</html>
